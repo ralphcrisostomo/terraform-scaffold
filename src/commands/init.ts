@@ -9,6 +9,7 @@ import {
 import path from "node:path";
 import chalk from "chalk";
 import { input } from "@inquirer/prompts";
+import { fileURLToPath } from "node:url";
 import type { ResolvedPaths } from "../types.js";
 
 interface InitValues {
@@ -79,7 +80,7 @@ function copyDirWithPlaceholders(
 }
 
 function getInitTemplatesDir(): string {
-  const __dirname = path.dirname(new URL(import.meta.url).pathname);
+  const __dirname = path.dirname(fileURLToPath(import.meta.url));
   // In dist/, go up to package root, then into src/templates/init
   return path.resolve(__dirname, "..", "src", "templates", "init");
 }

@@ -8,6 +8,7 @@ import {
   copyFileSync,
 } from "node:fs";
 import { readFile } from "node:fs/promises";
+import { fileURLToPath } from "node:url";
 import path from "node:path";
 import { createHash } from "node:crypto";
 import chalk from "chalk";
@@ -81,7 +82,7 @@ function copyDir(src: string, dest: string): void {
 function getPackageVersion(): string {
   try {
     const pkgPath = path.resolve(
-      path.dirname(new URL(import.meta.url).pathname),
+      path.dirname(fileURLToPath(import.meta.url)),
       "..",
       "..",
       "package.json",
