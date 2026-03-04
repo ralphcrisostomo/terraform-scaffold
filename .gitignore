@@ -2,6 +2,7 @@ node_modules/
 dist/
 .tmp/
 *.tsbuildinfo
+.idea/
 
 # Playground generated output
 playground/terraform/modules/

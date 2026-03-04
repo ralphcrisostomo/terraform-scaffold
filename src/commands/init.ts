@@ -274,6 +274,43 @@ export async function runInit(argv: string[]): Promise<void> {
     }
   }
 
+  // 7. Inject convenience scripts into package.json
+  const pkgJsonPath = path.join(cwd, "package.json");
+  if (existsSync(pkgJsonPath)) {
+    const pkgJson = JSON.parse(readFileSync(pkgJsonPath, "utf-8"));
+    const scripts: Record<string, string> = pkgJson.scripts ?? {};
+    const environments = ["staging", "production"];
+    const newScripts: Record<string, string> = {
+      "gen:graphql": "terraform-scaffold graphql",
+      "gen:lambda": "terraform-scaffold lambda",
+    };
+    for (const env of environments) {
+      newScripts[`tf:init:${env}`] = `terraform-scaffold tf ${env} init`;
+      newScripts[`tf:plan:${env}`] = `terraform-scaffold tf ${env} plan`;
+      newScripts[`tf:apply:${env}`] =
+        `terraform-scaffold build --env=${env} && terraform-scaffold tf ${env} apply`;
+      newScripts[`tf:build:${env}`] = `terraform-scaffold build --env=${env}`;
+      newScripts[`tf:output:${env}`] = `terraform-scaffold tf-output ${env}`;
+    }
+    newScripts["tf:sync-modules"] = "terraform-scaffold sync-modules";
+
+    const addedScripts: string[] = [];
+    for (const [key, value] of Object.entries(newScripts)) {
+      if (!scripts[key]) {
+        scripts[key] = value;
+        addedScripts.push(key);
+      }
+    }
+
+    if (addedScripts.length > 0) {
+      pkgJson.scripts = scripts;
+      if (!dryRun) {
+        writeFileSync(pkgJsonPath, JSON.stringify(pkgJson, null, 2) + "\n");
+      }
+      createdFiles.push(`package.json scripts (${addedScripts.length} added)`);
+    }
+  }
+
   // Summary
   console.log(chalk.bold("\n  Created files:\n"));
   for (const file of createdFiles) {
@@ -287,10 +324,10 @@ export async function runInit(argv: string[]): Promise<void> {
         `  1. Copy terraform/envs/staging/terraform.tfvars.example to terraform.tfvars and fill in values`,
       ),
     );
-    console.log(chalk.gray(`  2. Run: npx terraform-scaffold tf staging init`));
+    console.log(chalk.gray(`  2. Run: bun run tf:init:staging`));
     console.log(
       chalk.gray(
-        `  3. Start scaffolding: npx terraform-scaffold graphql or npx terraform-scaffold lambda`,
+        `  3. Start scaffolding: bun run gen:graphql or bun run gen:lambda`,
       ),
     );
   }

@@ -15,9 +15,19 @@ async function getConfigAndPaths(): Promise<{
   config: TerraformScaffoldConfig;
   paths: ResolvedPaths;
 }> {
-  const config = await loadConfig();
-  const paths = resolveProjectPaths(config);
-  return { config, paths };
+  try {
+    const config = await loadConfig();
+    const paths = resolveProjectPaths(config);
+    return { config, paths };
+  } catch {
+    console.error(
+      chalk.red(
+        "No terraform-scaffold.config.ts found.\n\n" +
+          `  Run ${chalk.cyan("npx terraform-scaffold init")} to get started.\n`,
+      ),
+    );
+    process.exit(1);
+  }
 }
 
 // init — does not require existing config
