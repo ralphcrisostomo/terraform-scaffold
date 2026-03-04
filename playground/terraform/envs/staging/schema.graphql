@@ -1,0 +1,34 @@
+type Product @model {
+  id: ID
+  name: String
+  description: String
+  price: Float
+  category: String
+  inStock: Boolean
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+type Order @model {
+  id: ID
+  userId: ID!
+  productId: ID!
+  quantity: Int
+  totalPrice: Float
+  status: String
+  shippingAddress: String
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+type Query {
+  productById(id: ID): Product
+  orderById(id: ID): Order
+  ordersByUserId(userId: ID!): [Order]
+}
+
+type Mutation {
+  createProduct(payload: AWSJSON): Product
+  createOrder(payload: AWSJSON): Order
+  updateOrder(payload: AWSJSON): Order
+}

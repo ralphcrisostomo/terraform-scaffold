@@ -1,0 +1,15 @@
+node_modules/
+dist/
+.tmp/
+*.tsbuildinfo
+
+# Playground generated output
+playground/terraform/modules/
+playground/terraform/lambda/dist/*
+!playground/terraform/lambda/dist/.gitkeep
+playground/terraform/lambda/src/Playground*
+playground/app/graphql/*
+playground/app/composables/*
+!playground/app/graphql/.gitkeep
+!playground/app/composables/.gitkeep
+playground/.env*

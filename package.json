@@ -1,0 +1,45 @@
+{
+  "name": "terraform-scaffold",
+  "version": "1.0.0",
+  "type": "module",
+  "bin": {
+    "terraform-scaffold": "./dist/cli.js"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/",
+    "src/templates/",
+    "src/terraform-modules/"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "bun run build",
+    "playground": "cd playground && node ../dist/cli.js",
+    "playground:graphql": "cd playground && node ../dist/cli.js graphql",
+    "playground:lambda": "cd playground && node ../dist/cli.js lambda",
+    "playground:build": "cd playground && node ../dist/cli.js build",
+    "playground:sync": "cd playground && node ../dist/cli.js sync-modules",
+    "playground:reset": "git checkout -- playground/"
+  },
+  "dependencies": {
+    "archiver": "^7.0.1",
+    "chalk": "^5.6.2",
+    "commander": "^13.0.0",
+    "cosmiconfig": "^9.0.0",
+    "esbuild": "^0.27.3",
+    "@inquirer/prompts": "^7.0.0"
+  },
+  "devDependencies": {
+    "@types/archiver": "^7.0.0",
+    "@types/node": "^22.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.7.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ralphcrisostomo/terraform-scaffold.git"
+  }
+}
