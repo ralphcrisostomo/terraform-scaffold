@@ -22,6 +22,8 @@ export interface TerraformScaffoldPaths {
   schema: string;
   graphqlDir: string;
   composablesDir: string;
+  servicesDir: string;
+  utilsDir: string;
 }
 
 export interface LambdaBuildConfig {
@@ -107,6 +109,7 @@ export interface ResolvedPaths {
   lambdaDist: string;
   graphqlDir: string;
   composablesDir: string;
+  servicesDir: string;
   tfStagingDir: string;
   /** Path to the package's template directory */
   templatesDir: string;

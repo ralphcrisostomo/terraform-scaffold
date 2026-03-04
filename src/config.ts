@@ -19,6 +19,8 @@ const DEFAULT_PATHS = {
   schema: "terraform/envs/staging/schema.graphql",
   graphqlDir: "app/graphql",
   composablesDir: "app/composables",
+  servicesDir: "services",
+  utilsDir: "utils",
 };
 
 const DEFAULT_LAMBDA_BUILD = {
@@ -92,6 +94,7 @@ export function resolveProjectPaths(
     lambdaDist: path.join(projectRoot, config.paths.lambdaDist),
     graphqlDir: path.join(projectRoot, config.paths.graphqlDir),
     composablesDir: path.join(projectRoot, config.paths.composablesDir),
+    servicesDir: path.join(projectRoot, config.paths.servicesDir),
     tfStagingDir: path.join(projectRoot, config.paths.terraformEnvs, "staging"),
     templatesDir: path.join(packageDir, "src", "templates"),
     terraformModulesDir: path.join(packageDir, "src", "terraform-modules"),

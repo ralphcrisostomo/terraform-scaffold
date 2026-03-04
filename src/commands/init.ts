@@ -248,7 +248,49 @@ export async function runInit(argv: string[]): Promise<void> {
     createdFiles,
   );
 
-  // 6. Copy terraform modules via sync-modules logic
+  // 6. Copy services/ templates
+  const servicesTemplateDir = path.join(initTemplatesDir, "services");
+  const servicesTargetDir = path.join(cwd, "services");
+  if (!dryRun) {
+    mkdirSync(servicesTargetDir, { recursive: true });
+  }
+  copyDirWithPlaceholders(
+    servicesTemplateDir,
+    servicesTargetDir,
+    values,
+    dryRun,
+    createdFiles,
+  );
+
+  // 7. Copy composables/ templates
+  const composablesTemplateDir = path.join(initTemplatesDir, "composables");
+  const composablesTargetDir = path.join(cwd, "app", "composables");
+  if (!dryRun) {
+    mkdirSync(composablesTargetDir, { recursive: true });
+  }
+  copyDirWithPlaceholders(
+    composablesTemplateDir,
+    composablesTargetDir,
+    values,
+    dryRun,
+    createdFiles,
+  );
+
+  // 8. Copy utils/ templates
+  const utilsTemplateDir = path.join(initTemplatesDir, "utils");
+  const utilsTargetDir = path.join(cwd, "utils");
+  if (!dryRun) {
+    mkdirSync(utilsTargetDir, { recursive: true });
+  }
+  copyDirWithPlaceholders(
+    utilsTemplateDir,
+    utilsTargetDir,
+    values,
+    dryRun,
+    createdFiles,
+  );
+
+  // 9. Copy terraform modules via sync-modules logic
   const modulesTargetDir = path.join(cwd, "terraform", "modules");
   const modulesSourceDir = path.resolve(
     initTemplatesDir,
@@ -275,7 +317,7 @@ export async function runInit(argv: string[]): Promise<void> {
     }
   }
 
-  // 7. Inject convenience scripts into package.json
+  // 10. Inject convenience scripts into package.json
   const pkgJsonPath = path.join(cwd, "package.json");
   if (existsSync(pkgJsonPath)) {
     const pkgJson = JSON.parse(readFileSync(pkgJsonPath, "utf-8"));
