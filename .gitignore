@@ -3,6 +3,7 @@ dist/
 .tmp/
 *.tsbuildinfo
 .idea/
+.npmrc
 
 # Playground generated output
 playground/terraform/modules/
